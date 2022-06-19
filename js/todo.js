@@ -53,7 +53,7 @@ function todoSubmit(e){
     todoinput.value='';
 }
 function todoList(){
-    todos = JSON.parse(localStorage.getItem(TODOS_KEY));
+    todos = JSON.parse(localStorage.getItem(TODOS_KEY)) ?? [];
     todos = todos.sort(function(a,b){
         if(a.ok < b.ok){
             return -1;
