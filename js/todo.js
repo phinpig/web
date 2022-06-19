@@ -54,18 +54,20 @@ function todoSubmit(e){
 }
 function todoList(){
     todos = JSON.parse(localStorage.getItem(TODOS_KEY));
-    todos = todos.sort(function(a,b){
-        if(a.ok < b.ok){
-            return -1;
-        }
-        if(a.ok > b.ok){
-            return 1;
-        }
-        return 0;
-    })
-    todos.forEach(function(obj){
-        htmlView(obj);
-    });
+    if(todos !== null){
+        todos = todos.sort(function(a,b){
+            if(a.ok < b.ok){
+                return -1;
+            }
+            if(a.ok > b.ok){
+                return 1;
+            }
+            return 0;
+        })
+        todos.forEach(function(obj){
+            htmlView(obj);
+        });
+    }
     
 }
  
