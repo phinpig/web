@@ -1,1 +1,1 @@
-[["# test" ]()](https://phinpig.github.io/web/)
+https://phinpig.github.io/web/
