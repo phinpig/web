@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        body{}
+        div.pic {position:sticky; top:0; height:100vh}
+        div.pic div{position:absolute;top:0; left:0; width:100%;height:100%;opacity: 0;transition: 0.5s;}
+        div.pic div[data-index="0"]{background-color:rgb(252, 4, 4)}
+        div.pic div[data-index="1"]{background-color:rgb(206, 241, 6)}
+        div.pic div[data-index="2"]{background-color:rgb(9, 241, 98)}
+        div.pic div[data-index="3"]{background-color:rgb(0, 68, 255)}
+        div.pic div.visible{ opacity: 1;}
+        div.text div{position:relative;display:flex; width:50%; height:50px;margin:0 auto; align-items: center; justify-content: center;;
+            background-color:rgba(255,255,255,0.4);
+            border-radius: 10px;;
+            margin-bottom:50vh;
+        }
+        div.text {padding-bottom:1px}
+        body:before{
+            content:"";
+            position:fixed; top:147.8px; left:0; width:100%;z-index:100;
+            background-color:#000; height:1px;
+        }
+    </style>
+    <p>
+        아일랜드의 부름(Ireland's Call)은 아일랜드 럭비 협회에서 작곡한 곡으로 럭비 세계 대회에서 주로 국가 대신 불리던 곡이었다. 그러나 최근에는 럭비를 포함하여 아일랜드 하키, 크리켓, 코프볼 등 여러 스포츠의 세계 리그에서 국가 대신 제창되고 있다. 공식적으로는 영어 가사만 있지만 비공식 아일랜드어 가사도 몇 개 있다.
+    </p>
+    <div class="pic">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>        
+    </div>
+    <div class="text">
+        <div>0</div>
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+    </div>
+    
+   <script>        
+        const divPics = document.querySelectorAll('div.pic div');
+        const divTexts = document.querySelectorAll('div.text div');
+        let currentItem = divPics[0];
+        let ioIndex;
+
+        const io = new IntersectionObserver((entries,observer) => {
+            ioIndex = entries[0].target.dataset.index * 1 
+        });
+        for(let i=0; i<divTexts.length;i++){
+            io.observe(divTexts[i])
+            divTexts[i].dataset.index = i;
+            divPics[i].dataset.index = i;
+        }
+        function activate(){
+            currentItem.classList.add('visible');
+        }
+        function  inactivate(){
+            currentItem.classList.remove('visible');
+        }
+        document.addEventListener('scroll',()=>{
+            let step;
+            let boundingRect;
+            let temp = 0 ;
+            //for(let i=0;i<divTexts.length;i++){
+            for(let i=ioIndex-1;i< ioIndex+2;i++){
+                step = divTexts[i];
+                if(!step) continue;
+                boundingRect = step.getBoundingClientRect();  
+               
+                if(boundingRect.top > window.innerHeight * 0.4&& 
+                   boundingRect.top < window.innerHeight * 0.8){
+                    inactivate();
+                    currentItem = divPics[step.dataset.index]
+                    activate();
+                }  
+                
+            }
+           
+        });
+        window.addEventListener('load',()=>{
+            setTimeout(() => scrollTo(0,0),100);
+        })
+        activate();
+     
+   </script>
+    
+</body>
+</html>
