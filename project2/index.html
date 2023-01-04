@@ -9,24 +9,30 @@
 <body>
     <style>
         body{}
-        div.pic {position:sticky; top:0; height:100vh}
-        div.pic div{position:absolute;top:0; left:0; width:100%;height:100%;opacity: 0;transition: 0.5s;}
+        div.pic {position:sticky; top:0; height:100vh;overflow:hidden}
+        div.pic div{position:absolute;top:0; left:0; width:100%;height:100%;opacity: 0;transition: 0.5s; will-change: opacity;}
         div.pic div[data-index="0"]{background-color:rgb(252, 4, 4)}
         div.pic div[data-index="1"]{background-color:rgb(206, 241, 6)}
         div.pic div[data-index="2"]{background-color:rgb(9, 241, 98)}
-        div.pic div[data-index="3"]{background-color:rgb(0, 68, 255)}
+        div.pic div[data-index="3"]{background-color:rgb(132, 151, 201)}
         div.pic div.visible{ opacity: 1;}
         div.text div{position:relative;display:flex; width:50%; height:50px;margin:0 auto; align-items: center; justify-content: center;;
             background-color:rgba(255,255,255,0.4);
             border-radius: 10px;;
-            margin-bottom:50vh;
+            margin-bottom:60vh;
         }
         div.text {padding-bottom:1px}
-        body:before{
-            content:"";
-            position:fixed; top:147.8px; left:0; width:100%;z-index:100;
-            background-color:#000; height:1px;
+    
+        .bird{
+            width:100px;height:auto; position:absolute;left:0; top:50%;
+            transform: translateX(-100%);            
+            transition: 1.5s 0.5s linear;
         }
+        [data-index="4"] .bird{
+          left:30%;
+          bottom:30#;
+        }
+
     </style>
     <p>
         아일랜드의 부름(Ireland's Call)은 아일랜드 럭비 협회에서 작곡한 곡으로 럭비 세계 대회에서 주로 국가 대신 불리던 곡이었다. 그러나 최근에는 럭비를 포함하여 아일랜드 하키, 크리켓, 코프볼 등 여러 스포츠의 세계 리그에서 국가 대신 제창되고 있다. 공식적으로는 영어 가사만 있지만 비공식 아일랜드어 가사도 몇 개 있다.
@@ -34,17 +40,39 @@
     <div class="pic">
         <div></div>
         <div></div>
+        <div data-action="birdFlies"><img class="bird" src="https://studiomeal.com/wp-content/uploads/2020/09/bird.gif"></div>
         <div></div>
-        <div></div>        
+        <div data-action="birdFlies2">
+            <img class="bird" src="https://studiomeal.com/wp-content/uploads/2020/09/bird.gif">
+        </div>        
     </div>
     <div class="text">
         <div>0</div>
         <div>1</div>
         <div>2</div>
         <div>3</div>
+        <div>4</div>
     </div>
     
    <script>        
+        const actions={
+            birdFlies(key){
+                if(key){
+                    document.querySelector('[data-index="2"] .bird').style.transform =`translateX(${window.innerWidth}px)`;
+                }else{
+                    document.querySelector('[data-index="2"] .bird').style.transform =`translateX(-100%)`;
+                }
+                
+            },
+            birdFlies2(key){
+                if(key){
+                    document.querySelector('[data-index="4"] .bird').style.transform =`translate(${window.innerWidth}px, ${-window.innerHeight * 0.7}px)`;
+                }else{
+                    document.querySelector('[data-index="4"] .bird').style.transform =`translateX(-100%)`;
+                }
+                
+            }
+        }
         const divPics = document.querySelectorAll('div.pic div');
         const divTexts = document.querySelectorAll('div.text div');
         let currentItem = divPics[0];
@@ -58,11 +86,17 @@
             divTexts[i].dataset.index = i;
             divPics[i].dataset.index = i;
         }
-        function activate(){
+        function activate(action){
             currentItem.classList.add('visible');
+            if(action){
+                actions[action](true);
+            }
         }
-        function  inactivate(){
+        function  inactivate(action){
             currentItem.classList.remove('visible');
+            if(action){
+                actions[action](false);
+            }
         }
         document.addEventListener('scroll',()=>{
             let step;
@@ -76,9 +110,9 @@
                
                 if(boundingRect.top > window.innerHeight * 0.4&& 
                    boundingRect.top < window.innerHeight * 0.8){
-                    inactivate();
-                    currentItem = divPics[step.dataset.index]
-                    activate();
+                    inactivate(currentItem.dataset.action);
+                    currentItem = divPics[step.dataset.index]; 
+                    activate(currentItem.dataset.action);
                 }  
                 
             }
@@ -87,7 +121,7 @@
         window.addEventListener('load',()=>{
             setTimeout(() => scrollTo(0,0),100);
         })
-        activate();
+       // activate();
      
    </script>
     
