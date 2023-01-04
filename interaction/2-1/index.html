@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+</head>
+<style>
+    *{margin:0;padding:0;}
+    article div{height:50px}
+    .persent-area{position:fixed;top:50%;left:10%;right:10%; transform: translateY(-50%); background-color:#fff; padding:20px;}
+    .persent-area .bar{height:50px;border:1px solid #000}
+    .persent-area .bar .b{display:block;height:100%;width:0;background-color:#000; transition: .1s linear;}
+    .persent-area .text{margin-top:5px;text-align:center;font-weight: bold;;}
+</style>
+<body>
+    <section>
+        <article>
+             
+        </article>
+        <div class="persent-area">
+            <div class="bar"><span class="b"></span></div>
+            <div class="text">0%</div>
+        </div>
+    </section>
+    <script>
+        $(function(){  
+            const options={
+                length:60 
+            }
+            const progressBar = $('.persent-area .bar .b');
+            const progressText = $('.persent-area .text');
+            function makeDiv(){
+                for(let i=0; i < options.length;i++){
+                    const a = parseInt(Math.random() * 256);        
+                    const b = parseInt(Math.random() * 256);
+                    const c = parseInt(Math.random() * 256);
+                    
+                    $('article').append(`<div style="background-color:rgb(${a},${b},${c});"></div>`);
+                }
+            }
+            function getPercent(){
+                const scrollHeight = $('section').height();
+                const scrollRealHeight= scrollHeight - $(window).height();
+                const winScrollTop = $(window).scrollTop();
+                const persent = winScrollTop / scrollRealHeight * 100;
+          
+                const textPersent = Math.round(persent); 
+                render(textPersent)
+            }
+            function render(persent){
+                progressBar.css({
+                    width:persent+'%'
+                })
+                progressText.text(`${persent}%`);
+            }
+            function init(){
+                makeDiv();
+                getPercent();
+            }
+            $(window).on('scroll',()=>{
+                getPercent();
+            })
+            init();
+
+        });
+       
+    </script>
+</body>
+</html>
