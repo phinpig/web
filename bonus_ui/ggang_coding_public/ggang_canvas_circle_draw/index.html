@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-compatible" content="chrome=1,IE=edge">
+<title></title>
+<script type="text/javascript" src="./js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="./js/ggang.circledraw.min.js"></script>
+</head>
+<body>
+<style>
+.cnavs_wrap {position:relative; width:800px; height:600px; margin:0 auto; transition:2s;}
+.cnavs_wrap.active{ transform:rotate(360deg); }
+.cnavs_wrap canvas {width: 100%; height: 100%;}
+.cnavs_wrap .count {position: absolute; left: 50%; top: 50%; font-size: 50px; color:#50bdf3; transform: translate(-50%, -50%); -webkit-transform: translate(-50%, -50%); -moz-transform: translate(-50%, -50%); -o-transform: translate(-50%, -50%); -ms-transform: translate(-50%, -50%);}
+
+.cnavs_wrap.type2 {background: url('./images/bg.png') no-repeat 50% 50%; background-size: auto 100%; }
+.cnavs_wrap.type2 .count {color:#8737ff;}
+</style>
+	<div class="cnavs_wrap">
+		<canvas id="canvas" width="800" height="600"></canvas>
+		<span class="count"></span>
+	</div>
+	<div class="cnavs_wrap type2">
+		<canvas id="canvas2" width="800" height="600"></canvas>
+		<span class="count"></span>
+	</div>
+</body>
+</html>
+<script>
+/**
+ *  [ggang.circledraw.js]
+ *  애플 스크롤 강좌 : https://www.inflearn.com/course/애플-스크롤-인터렉션-자바스크립트?inst=a9e843be
+ *  유튜브채널 : https://www.youtube.com/channel/UCWJfpq3-gjbreL6mdfPhL-Q?view_as=subscriber
+ *  만든이 : 깡코딩
+ *  피드백 : ggangcodingqna@gmail.com
+ *  서포트브라우저 : IE9++
+ *
+ *  컬러셋 그린 옐로~ :)
+ *  그린, 옐로 : #00ff6b, #fbff22
+ *
+ * 	컬러셋 보라 핑크 ~ :)
+ *  보라, 핑크 : #ff80f2, #8737ff
+ *
+ *  선없애기 : radius를 0으로 설정
+ */
+
+/* 사용성 업데이트 2021.9.28
+1. 선의 시작위치를 0도 ~ 360로 설정할 수 있도록 변경.
+2. reverse기능으로 선을 반대로 그릴때 종료 지점에 입력한 값만큼 이동하도록 변경.
+3-1. 정방향 : 그려질 거리가 0일경우 라인을 그리지 않도록 변경.
+3-2. 역방향 : reverse를 활용해 선을 지우다가 진행률이 0이되면 선을 지우도록 변경.
+*/
+$(function(){
+
+	/************** 숫자를 바꿔 보며 원을 그려보세요:) 잘못넣으면 오류가 생기니 따옴표 지우지말고 조심조심 바꾸세요 ^.^; *******/
+	$('#canvas').GgangCircleDraw({ //정방향 그리기
+		drawDistance:{
+			start : 0, //선 시작위치(deg도)  12시 : 0, 3시 :90, 6시: 180, 9시: 270
+			end : 80, //선이그려지는거리(%퍼센트): 100%(맥시멈) * end가 0이면 그려지지 않음.
+			line : 'round' //라인끝모양 종류: butt|round|square
+		},
+		speed:1,//그리는 속도 낮을수록 빨리 그림
+		reverse:false, //true 일경우 역방향 진행, false일경우 정방향 진행
+		backCircle:{
+			radius: 200,//원 크기
+			color1: '#b1b1b1',//그라데이션컬리1
+			color2: '#b1b1b1',//그라데이션컬러2
+			lineWidth : 70 //보더넓이
+		},
+		frontCircle:{
+			radius: 200,
+			color1: '#090979',
+			color2: '#00d4ff',
+			lineWidth : 70
+		}
+	});
+	setTimeout(function(){ //역방향 그리기
+		$('#canvas2').GgangCircleDraw({
+			drawDistance:{
+				start : 0, //선 시작위치(deg도)  12시 : 0, 3시 :90, 6시: 180, 9시: 270
+				end : 10, //선이그려지는거리(%퍼센트): 100%(맥시멈), * reverse를 활용해 거꾸로 그릴때는 100부터 시작이기 때문에 end값이 100이면 그려지지 않음
+				line : 'round' //라인끝모양 종류: butt|round|square
+			},
+			speed:1, //그리는 속도 낮을수록 빨리 그림
+			reverse:true,
+			backCircle:{
+				radius: 0,//원 크기
+				color1: '#b1b1b1',//그라데이션컬리1
+				color2: '#b1b1b1',//그라데이션컬러2
+				lineWidth : 1 //보더넓이
+			},
+			frontCircle:{
+				radius: 200,
+				color1: '#ff80f2',
+				color2: '#8737ff',
+				lineWidth : 70
+			}
+		});
+	},1000)
+});
+</script>
