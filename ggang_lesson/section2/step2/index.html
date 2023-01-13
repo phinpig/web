@@ -26,8 +26,15 @@
 }
 
 .sc_infinity .list li {
-	float: left;
-	width: 25%;
+	float: left; 
+	width: 25%; opacity: 0;
+	transition:  0.5s linear ;
+}
+.sc_infinity .list li:nth-child(-n+7){opacity: 1;}
+.sc_infinity .list li.view{opacity: 1;}
+@keyframes view {
+	0%{opacity: 0;} 
+	100%{opacity: 1;}
 }
 
 .sc_infinity .list li figure {
@@ -90,13 +97,39 @@
 	<script type="text/javascript">
 	$(function() {
 		//코드를 작성해보세요.
-
-		$(window).scroll(function() {
-
+		let winTop;
+		let onTop;
+		const count={total:50,current:0}
+		$(window).scroll(function() {		 
+			listCall();
 		});
-
+		function getList(){
+			let list;
+			if(count.total >= count.current){			
+				count.current+=1;
+				list=`
+				<li><figure><img src="../images/1.jpg"></figure></li> 
+				<li><figure><img src="../images/2.jpg"></figure></li> 
+				<li><figure><img src="../images/3.jpg"></figure></li> 
+				`;
+				return list;				
+			} 
+			
+		}
+		function listCall(){
+			winTop = $(window).scrollTop();
+			onTop = $(document).height() - $(window).height() - $('.footer').height(); 
+			console.log(winTop, onTop)
+			if(winTop >= onTop){  
+				$('.list').append(getList());  
+				setTimeout(()=>{
+					 $('.list li:not(.view)').addClass('view'); 
+				},0) 
+			}
+		}
 		function init() {
-
+			$(window).scrollTo(0)
+			listCall();
 		}
 
 		init();
