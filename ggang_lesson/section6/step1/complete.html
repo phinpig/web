@@ -29,7 +29,10 @@
 .sec01 .nav_list .list li {}
 .sec01 .nav_list .list li a {overflow:hidden; position:relative; display:inline-block; font-size:140px; line-height: 1; color:#fff; transition:transform .5s;}
 .sec01 .nav_list .list li a .mask {position:absolute; left:0; top:0; z-index:10; height:100%; background: #fff; animation:text_mask 2s 1 cubic-bezier(0.24, 0.77, 0.32, 0.95) both paused;}
-.sec01 .nav_list .list li a .txt {position:relative; z-index:20; display: block; animation:text_opacity 2s 1s 1 cubic-bezier(0.24, 0.77, 0.32, 0.95) both paused;}
+.sec01 .nav_list .list li a .txt {
+	position:relative; z-index:20; display: block; 
+	animation:text_opacity 2s 1s 1 cubic-bezier(0.24, 0.77, 0.32, 0.95) both paused;
+}
 .sec01.active .nav_list .list li a .mask {animation-play-state: running;}
 .sec01.active .nav_list .list li a .txt {animation-play-state: running;}
 

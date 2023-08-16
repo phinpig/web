@@ -35,9 +35,7 @@
 	z-index: 20;
 }
 
-.sec01 .nav_list .list {}
-
-.sec01 .nav_list .list li {}
+ 
 
 .sec01 .nav_list .list li a {
 	overflow: hidden;
@@ -53,8 +51,47 @@
 	position: relative;
 	z-index: 20;
 	display: block;
+	animation: text_opacity 2s 1s 1 cubic-bezier(0.07, 1.18, 1, 1) both paused 
 }
-
+.sec01.active .nav_list .list li a .txt { animation-play-state: running;}
+@keyframes text_opacity {
+	0%{
+		opacity: 0;
+		transform: translateX(-50%);
+		color:#3535ff;
+	}
+ 
+	100%{
+		opacity: 1;
+		transform: translateX(0%);
+		color:#fff;
+	}
+}
+.sec01 .nav_list .list li a .mask{
+	position: absolute;
+	left:0;
+	top:0;
+	z-index:0;
+	width:0%;
+	height:100%;
+	background:#fff;	
+	animation: text_mask 2s 1 ease both paused;
+}
+.sec01.active .nav_list .list li a .mask{animation-play-state: running;}
+@keyframes text_mask {
+	0%{
+		width:0;
+		transform: translateX(0);
+	}
+	50%{	  	
+		width:100%;
+		transform: translateX(0);
+	}
+	100%{		
+		width:100%;
+		transform: translateX(101%);
+	}
+}
 .sec01 .nav_list .list li a .mask2 {
 	position: absolute;
 	left: 0;
@@ -67,11 +104,7 @@
 }
 
 .sec01 .nav_list .list li a:hover {
-	transform: translateX(-10px);
-	-webkit-transform: translateX(-10px);
-	-moz-transform: translateX(-10px);
-	-o-transform: translateX(-10px);
-	-ms-transform: translateX(-10px);
+	transform: translateX(-10px); 
 }
 
 .sec01 .nav_list .list li a:hover .mask2 {
@@ -99,6 +132,16 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 	opacity: .15;
+	animation: roate_action 40s infinite  paused;
+}
+.sec01.active .bg_rotate{animation-play-state: running;}
+@keyframes roate_action {
+	0%{
+		transform: rotate(0);
+	}
+	100%{
+		transform: rotate(360deg);
+	}
 }
 </style>
 <body>
@@ -106,33 +149,37 @@
 		<header class="header_wrap">
 			<div class="logo">GGANG CODING</div>
 		</header>
-		<section class="sec01">
+		<section class="sec01 active">
 			<article class="inner">
 				<div class="tb_row">
 					<div class="tb_cell">
 						<nav class="nav_list">
 							<ul class="list">
 								<li>
-									<a href="" class="active">
+									<a href="" >
 										<span class="txt">TODAY</span>
+										<span class="mask"></span>
 										<span class="mask2"></span> <!-- mask2 메뉴 오버시 나오는 노란색 밑줄 -->
 									</a>
 								</li>
 								<li>
 									<a href="">
 										<span class="txt">IMAGE Mask</span>
+										<span class="mask"></span>
 										<span class="mask2"></span>
 									</a>
 								</li>
 								<li>
 									<a href="">
 										<span class="txt">TEXT Mask</span>
+										<span class="mask"></span>
 										<span class="mask2"></span>
 									</a>
 								</li>
 								<li>
 									<a href="">
 										<span class="txt">OVERLAP</span>
+										<span class="mask"></span>
 										<span class="mask2"></span>
 									</a>
 								</li>
