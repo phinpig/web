@@ -10,6 +10,7 @@
 </head>
 <style type="text/css">
 /* common 디자인 해더, 푸터 레이아웃 등 */
+*{margin:0;padding:0}
 .inner { max-width: 1000px; margin: 0 auto; }
 .com_tit01 { font-family: 'NotoB'; font-size: 50px; color: #222; text-align: center; }
 .com_txt01 { max-width: 70%; margin: 0 auto; font-family: 'NotoR'; font-size: 22px; color: #555; text-align: center; }
@@ -309,7 +310,7 @@
 
 <body>
 	<div class="wrap">
-		<header class="header_wrap">
+	  <header class="header_wrap">
 			<div class="logo">GGANG CODING</div>
 		</header>
 		<nav class="nav_list">
@@ -324,9 +325,9 @@
 					<button>PL</button>
 				</li>
 			</ul>
-		</nav>
-		<!-- <section style="height:500px"></section> -->
-		<section class="sec_mainvis">
+		</nav>  
+
+		<section class="sec_mainvis event-area">
 			<article class="main_visual">
 				<h2 class="tit">
 					하루 3깡으로 만드는<br> 인터렉티브한 웹사이트
@@ -338,7 +339,8 @@
 				</figure>
 			</article>
 		</section>
-		<section class="sec_list_overlap">
+		<section class="sec_list_overlap event-area">
+ 		
 			<article class="list_overlap inner">
 				<h2 class="com_tit01">
 					IN LIST :)
@@ -361,7 +363,7 @@
 						</figure>
 					</li>
 				</ul>
-			</article>
+			</article>  
 		</section>
 		<section class="sec_parallax active">
 			<h2 class="com_tit01">
@@ -413,54 +415,52 @@
 		let sectionMainVisual = $('.sec_mainvis');
 		let header = $('.header_wrap');
 		let sectionOverlap = $('.sec_list_overlap');
-		let sectionMainTop ;
+		//let sectionMainTop ;
 		let sectionMainBottom ;
 		let sectionIsMoving =  false;
 		function setProperty(){
 			winScrollTop  = $(window).scrollTop();
-			sectionMainTop = sectionMainVisual.offset().top;
+		//	sectionMainTop = sectionMainVisual.offset().top;
 			sectionMainBottom = sectionMainVisual.offset().top + sectionMainVisual.height();
 			
 		}
-		function moveStartRender(){
-			if(!header.hasClass('active')){
-				header.addClass('active');
-				sectionMainVisual.addClass('active');
-				sectionOverlap.addClass('active');
-				$('html').stop(true).animate({
-					scrollTop: sectionMainBottom
-				},500,function(){
-					sectionIsMoving=false; 
-				});
-			}else{
-				header.removeClass('active');	
-				sectionMainVisual.removeClass('active');	
-				sectionOverlap.removeClass('active');		
-				$('html').stop(true).animate({
-					scrollTop: sectionMainTop
-				},500,function(){
-					sectionIsMoving=false;
-				});				
-			}
-			
-		}
-		function activeCheack(){
-			header.addClass('active');
-			sectionMainVisual.addClass('active');
-			sectionOverlap.addClass('active');
-		}
+        const io = new IntersectionObserver((entries, observer) => {            
+            entries.forEach((entry) => { 
+                if(entry.isIntersecting){  
+					if($(entry.target).hasClass('sec_mainvis')){
+						header.removeClass('active');	
+						sectionMainVisual.removeClass('active');	
+						sectionOverlap.removeClass('active');	  
+					}else if($(entry.target).hasClass('sec_list_overlap')){ 
+						header.addClass('active');
+						sectionMainVisual.addClass('active');
+						sectionOverlap.addClass('active');		 
+					}
+					$('html').stop(true).animate({
+						scrollTop: $(entry.target).offset().top
+					},500,function(){
+						if($(entry.target).hasClass('sec_mainvis')){
+							observer.observe($('.sec_list_overlap')[0]);
+						}else{
+							observer.unobserve($('.sec_list_overlap')[0]);
+						} 
+						
+					});  
+
+                }
+            });
+
+          }, {
+            threshold: 0.01  
+          })    
+		$('.event-area').each(function(){
+			io.observe($(this)[0]);      
+		})   
+        
+ 
 		function moveSection(){
 			setProperty();
-		 
-			if(winScrollTop > sectionMainTop && winScrollTop < sectionMainBottom){
-				if(!sectionIsMoving){
-					moveStartRender(); 
-					sectionIsMoving = true;
-				}
-			}
-			if(winScrollTop >= sectionMainBottom){
-				activeCheack();
-			}
+	 
 		}
 		function init() {
 			moveSection();

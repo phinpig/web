@@ -217,15 +217,24 @@ $(function(){
 		sectionMainTop = sectionMainVisual.offset().top; //섹션의 top값을 구함.
 		sectionMainBottom = sectionMainTop + sectionMainVisual.height(); //섹션의 BOTTOM값을 구함.
 
-		parallaxOffsetTop = parallaxBody.offset().top; //패럴럭스가 시작될 요소의 상단 위치값
-		parallaxThisTop = winScrollTop - parallaxOffsetTop; //패럴럭스가 시작될 위치값을 구함.
-		parallaxPercent = parallaxThisTop / parallaxSpeed * 100; // 이동할 거리 백분율 값을 담음
+		parallaxOffsetTop = parallaxBody.offset().top; //패럴럭스가 시작될 요소의 상단 위치값			
+		parallaxThisTop = winScrollTop - parallaxOffsetTop; //패럴럭스가 시작될 위치값을 구함.  
+		
+		parallaxPercent = parallaxThisTop / parallaxSpeed * 100; // 이동할 거리 백분율 값을 담음 
+
 		parallaxMoveDistance = Math.max(parallaxStartValue - parallaxStartValue, Math.min(parallaxStartValue, parallaxStartValue - (parallaxStartValue * (parallaxPercent/100)))); //패럴럭스 요소가 움직일 거리를 구함
+		console.log(parallaxMoveDistance)
+		start = $('.sec_parallax ').offset().top - parallaxOffsetTop; 
+		persent = ($('.sec_parallax ').offset().top - winScrollTop)  / start * 100;
+		parallaxMoveDistance2 = Math.max(0,persent * 1.7)
+		 
+		 
 	};
 
 	function motionParallax() { // 스크롤할때 계속 호출될 패럴럭스 함수 선언
-
-		if(parallaxPercent > 60) {
+	 
+ 
+		if(parallaxPercent > 50) {
 			$('.sec_parallax').addClass('active');
 		}else {
 			$('.sec_parallax').removeClass('active');
@@ -236,7 +245,7 @@ $(function(){
 		});
 
 		parallaxList.eq(1).css({ //계산된 값을 엘리먼트에 적용
-			transform : 'translate(0px,'+ parallaxMoveDistance * 2.1 +'px)'
+			transform : 'translate(0px,'+ parallaxMoveDistance * 4.1 +'px)'
 		});
 
 		parallaxList.eq(2).css({ //계산된 값을 엘리먼트에 적용
