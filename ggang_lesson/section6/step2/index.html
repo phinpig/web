@@ -56,8 +56,11 @@
 	position: relative;
 	display: inline-block;
 	height: 200px;
+	overflow:hidden;
+	opacity: 0;
+	transition: opacity 1s .5s;
 }
-
+.section_today.active .date_box .date_count{opacity: 1;}
 .section_today .date_box .date_count:after {
 	clear: both;
 	display: block;
@@ -66,6 +69,19 @@
 
 .section_today .date_box .date_count .count_box {
 	float: left;
+	animation:count_date 2.8s 1 ease-out both paused;
+}
+
+.section_today .date_box .date_count .count_box.active{
+	animation-play-state: running;
+}
+@keyframes count_date {
+	0%{
+		transform: translateY(0px);
+	}
+	100%{
+		transform: translateY(-4800px);
+	}
 }
 
 .section_today .date_box .date_count .count_box span {
@@ -92,27 +108,10 @@
 					<div class="tb_cell">
 						<strong class="t_date">TODAY</strong>
 						<div class="date_count">
-							<div class="count_box">
+							<!-- <div class="count_box">
 								<span>2</span>
-							</div>
-							<div class="count_box">
-								<span>0</span>
-							</div>
-							<div class="count_box">
-								<span>2</span>
-							</div>
-							<div class="count_box">
-								<span>2</span>
-							</div>
-							<div class="count_box">
-								<span>1</span>
-							</div>
-							<div class="count_box">
-								<span>1</span>
-							</div>
-							<div class="count_box">
-								<span>9</span>
-							</div>
+							</div> -->
+
 						</div> <!-- 롤링될 날짜가 추가될 엘리먼트 -->
 					</div>
 				</div>
@@ -129,8 +128,47 @@
 	<script type="text/javascript">
 	$(function() {
 		//코드를 작성해보세요. :)
+		function countDate(){
+			const el = $('.date_count');
+			const date = new Date();
+			const todyaDate = String(date.getFullYear())+String(date.getMonth()+1)+String(date.getDate());
+			let resultArray =[];
+			resultArray = todyaDate.split('')
+			const rolling = 24;
+			$.each(resultArray,function(idx,val){
+				const number=Number(val)
+				let numberArray=[]
+				let countBox = $('<div class="count_box"/>');
+				for(let i=0;i<=rolling;i++){
+					const sum = number + i;
+					const num = sum >= 10 ? String(sum).split('')[1] : sum;
+					numberArray[i]=num;
+				}
+				numberArray.reverse()
+				numberArray.forEach(function(val){
+					const countValue = $('<span/>',{	text:val})
+					// console.log(typeof countVale);
+					//console.log('countVale',countVale,countValue.text());
+					countValue.appendTo(countBox)
+				});
 
+				countBox.appendTo(el)
+				.delay(idx*300)
+				//.addClass('active');
+				.queue(function(){
+					$(this).addClass('active');
+					//console.log(idx,this);
+				})
+
+			});
+
+		}
+		countDate();
+		setTimeout(function() {
+			$('section').addClass('active');
+		},200);
 	});
+
 	</script>
 </body>
 </html>
