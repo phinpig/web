@@ -107,11 +107,11 @@ $(function() {
 
 		scrollHeight = scrollBody.height();
 		sectionOffsetTop = scrollBody.offset().top;
-		scrollRealHeight = (scrollHeight - $(window).height());
+		scrollRealHeight = (scrollHeight - $(window).height()); // 실제 스크롤 높이
 		winScrollTop = $(window).scrollTop();
-		sectionScrolTop = winScrollTop - sectionOffsetTop;
-
+		sectionScrolTop = winScrollTop - sectionOffsetTop;	
 		scrollPerecnt =  sectionScrolTop / scrollRealHeight;
+	 
 		percent = scrollPerecnt * 100 ;
 	};
 
